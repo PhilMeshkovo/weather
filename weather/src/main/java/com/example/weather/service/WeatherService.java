@@ -37,12 +37,13 @@ public class WeatherService {
     public WeatherDto getWeather(String city) throws Exception {
 
         if (!validateCity(city)) {
+            log.error("Некорректное название города");
             throw new Exception("Некорректное название города");
         }
 
-        Optional<Weather> moscow = weatherRepo.findByLocation(city);
-        if (moscow.isPresent()) {
-            return new WeatherDto(moscow.get().getLocation(), moscow.get().getTemperature());
+        Optional<Weather> cityDB = weatherRepo.findByLocation(city);
+        if (cityDB.isPresent()) {
+            return new WeatherDto(cityDB.get().getLocation(), cityDB.get().getTemperature());
         }
 
         StringBuffer content = new StringBuffer();
@@ -73,6 +74,7 @@ public class WeatherService {
         weather.setLocation(city);
         weather.setTemperature(String.valueOf(celsius));
         weatherRepo.save(weather);
+        log.info("Добаляем погоду в базу");
     } catch (Exception e) {
         log.error(e.getMessage());
     }
