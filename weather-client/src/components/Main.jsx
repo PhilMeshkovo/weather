@@ -49,11 +49,13 @@ export function Main() {
         onChange={(e) => setValue(e.target.value)}
         value={value}
         />
-        <button className='btn white-text'
+        <button className='btn white-text '
         style={{
             position: 'absolute',
             top: 0,
-            right: 0
+            right: 0,
+            display: 'flex',
+            justifyContent: 'center'
         }}
         onClick={search}
         >Search &nbsp;<i className="material-icons ">search</i></button>
@@ -87,7 +89,7 @@ export function Main() {
           value={newTemp}
           />
         </div>
-        <button type="submit" className="btn" onClick={sendNewTemp}>Submit  &nbsp; <i className="material-icons">send</i></button>
+        <button type="submit" style={{display: 'flex', justifyContent: 'center'}} className="btn" onClick={sendNewTemp}>Submit  &nbsp; <i className="material-icons">send</i></button>
       </div>
     </form>
   </div>
