@@ -59,9 +59,11 @@ export function Main() {
         >Search &nbsp;<i className="material-icons ">search</i></button>
     </div>
     <div className="row">
-        {location != null && location.length ? <h3 className="center">In {location.toUpperCase()}  {temp} &#8451; now</h3> : <h3 className="center">NO SUCH CITY FOUND</h3>}
+        {location != null && location.length ? <h3 className="center green-text">In {location.toUpperCase()}  {temp} &#8451; now</h3> : <h3 className="center green-text">NO SUCH CITY FOUND</h3>}
     </div>
     <div className="row">
+        <hr style={{width: '100%'}}/>
+        <h4 className="center"><i className="material-icons small">star</i>&nbsp;You can set the weather of your city yourself...  </h4>
     <form className="col s12">
       <div className="row">
         <div className="input-field col s6">
