@@ -86,7 +86,7 @@ public class WeatherService {
     @Transactional
     public boolean addWeather(WeatherDto weatherDto) {
         if (validateCity(weatherDto.getLocation()) || !isNumeric(weatherDto.getTemp())
-                || Integer.parseInt(weatherDto.getTemp()) > 60) {
+                || Integer.parseInt(weatherDto.getTemp()) > 60 || Integer.parseInt(weatherDto.getTemp()) < -100) {
             log.error("Некорректное название города или температура");
             return false;
         }
