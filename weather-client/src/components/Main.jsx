@@ -7,21 +7,44 @@ export function Main() {
     const [newCity, setNewCity] = useState('');
     const [newTemp, setNewTemp] = useState('');
 
+    const [errors, setErrors] = useState({});
+
     const handleKeyNew = (e) => {
         if(e.key === 'Enter') {
            
         }
     } 
 
+    const setCityWithValidation = (e) => {
+        if(!e.match("([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z]+)")) {  
+            setErrors({"city": 'Некорректное название города'})
+        } else {
+            setNewCity(e);
+        }
+            
+    }
+
+    const setTempWithValidation = (e) => {
+        if(!e.length || +e > 60 || +e < -100 ) {
+            setErrors({"temp": 'Некорректная температура'})
+        } else {
+            setNewTemp(e)
+        }
+    }
+
     const sendNewTemp = async () => {
-        const requestOptions = {
+        if(newCity.length && newTemp.length) {
+            const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ location: newCity, temp: newTemp })
         };
         const response = await fetch('http://localhost:8080/weather/new', requestOptions);
         const data = await response.json();
-        console.log(data);
+        console.log(data); 
+        } else {
+            alert("Введите город и температуру")
+        }
     }
 
     const handleKey = (e) => {
@@ -74,20 +97,31 @@ export function Main() {
            id="city"
             type="text" 
             placeholder='City'
+            size="25"
             className="validate"
             onKeyDown={handleKeyNew}
-            onChange={(e) => setNewCity(e.target.value)}
+            onChange={(e) => setCityWithValidation(e.target.value)}
             value={newCity}
             />
+            <br/>
+          {errors['city'] != null && errors['city'].length ? <span style={{color: "red"}}>{errors['city']}</span> : null}
         </div>
         <div className="input-field col s6">
           <i className="material-icons prefix">wb_sunny</i>
-          <input id="temp" type="text" className="validate"
+          <input 
+          id="temp" 
+          type="number" 
+          pattern="[0-9]*"
+          inputMode="numeric"
+          className="validate"
           placeholder='Temperature'
           onKeyDown={handleKeyNew}
-          onChange={(e) => setNewTemp(e.target.value)}
+          onChange={(e) => setTempWithValidation(e.target.value)}
           value={newTemp}
           />
+          <br/>
+          {errors['temp'] != null && errors['temp'].length ? <span style={{color: "red"}}>{errors['temp']}</span> : null}
+          
         </div>
         <button type="submit" style={{display: 'flex', justifyContent: 'center'}} className="btn" onClick={sendNewTemp}>Submit  &nbsp; <i className="material-icons">send</i></button>
       </div>

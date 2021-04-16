@@ -33,12 +33,7 @@ public class WeatherService {
         weatherRepo.deleteAll();
     }
 
-    public WeatherDto getWeather(String city) throws Exception {
-
-        if (validateCity(city)) {
-            log.error("Некорректное название города");
-            throw new Exception("Некорректное название города");
-        }
+    public WeatherDto getWeather(String city) {
 
         Optional<Weather> cityDB = weatherRepo.findByLocation(city);
         if (cityDB.isPresent()) {
@@ -85,12 +80,6 @@ public class WeatherService {
 
     @Transactional
     public boolean addWeather(WeatherDto weatherDto) {
-        if (validateCity(weatherDto.getLocation()) || !isNumeric(weatherDto.getTemp())
-                || Integer.parseInt(weatherDto.getTemp()) > 60 || Integer.parseInt(weatherDto.getTemp()) < -100) {
-            log.error("Некорректное название города или температура");
-            return false;
-        }
-
         Optional<Weather> optionalWeather = weatherRepo.findByLocation(weatherDto.getLocation());
         if (optionalWeather.isPresent()) {
             Weather weatherToChange = weatherRepo.getOne(optionalWeather.get().getId());
@@ -103,13 +92,4 @@ public class WeatherService {
         }
         return true;
     }
-
-    private static boolean validateCity(String city) {
-        return !city.matches("([a-zA-Z]+|[a-zA-Z]+\\s[a-zA-Z]+)");
-    }
-
-    private static boolean isNumeric(String str) {
-        return str.matches("-?\\d+(\\.\\d+)?");
-    }
-
 }
