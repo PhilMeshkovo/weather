@@ -5,7 +5,7 @@
 /weather-client/.pnp
 .pnp.js
 
-/weather/target
+/weather-server/target
 
 # testing
 /weather-client/coverage
