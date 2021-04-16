@@ -1,5 +1,6 @@
 import {useState} from 'react'
 export function Main() {
+    
     const [location, setLocation] = useState('');
     const [temp, setTemp] = useState('');
     const [value, setValue] = useState('');
@@ -43,22 +44,18 @@ export function Main() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ location: newCity, temp: newTemp })
         };
-        const response = await fetch('http://localhost:8080/weather/new', requestOptions);
-        const data = await response.json();
-        console.log(data); 
+        await fetch('http://localhost:8080/weather/new', requestOptions);
         } else {
             alert("Введите город и температуру")
         }
     }
 
-    const handleSubmit = async () => {
-        const response = await fetch(`http://localhost:8080/weather/${value}`)
-        return await response.json();
-    }
-
-    const search = () => {
-        handleSubmit().then(data => setLocation(data.location));
-        handleSubmit().then(data => setTemp(data.temp));
+    const search = async () => {
+        await (await fetch(`http://localhost:8080/weather/${value}`)).json()
+        .then(data => {
+            setLocation(data.location)
+            setTemp(data.temp)
+            });
     }
 
     return <div className="row">
