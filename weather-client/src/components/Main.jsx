@@ -3,15 +3,19 @@ export function Main() {
     const [location, setLocation] = useState('');
     const [temp, setTemp] = useState('');
     const [value, setValue] = useState('');
-
     const [newCity, setNewCity] = useState('');
     const [newTemp, setNewTemp] = useState('');
-
     const [errors, setErrors] = useState({});
+
+    const handleKey = (e) => {
+        if(e.key === 'Enter') {
+            search();
+        }
+    } 
 
     const handleKeyNew = (e) => {
         if(e.key === 'Enter') {
-           
+           sendNewTemp();
         }
     } 
 
@@ -46,12 +50,6 @@ export function Main() {
             alert("Введите город и температуру")
         }
     }
-
-    const handleKey = (e) => {
-        if(e.key === 'Enter') {
-            search();
-        }
-    } 
 
     const handleSubmit = async () => {
         const response = await fetch(`http://localhost:8080/weather/${value}`)
@@ -123,7 +121,7 @@ export function Main() {
           {errors['temp'] != null && errors['temp'].length ? <span style={{color: "red"}}>{errors['temp']}</span> : null}
           
         </div>
-        <button type="submit" style={{display: 'flex', justifyContent: 'center'}} className="btn" onClick={sendNewTemp}>Submit  &nbsp; <i className="material-icons">send</i></button>
+        <button type="submit" style={{display: 'flex', justifyContent: 'center'}} className="btn white-text" onClick={sendNewTemp}>Submit  &nbsp; <i className="material-icons">send</i></button>
       </div>
     </form>
   </div>
